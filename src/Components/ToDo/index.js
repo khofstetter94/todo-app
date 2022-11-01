@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { SettingsContext } from '../../Context/Settings/Settings.jsx';
 import useForm from '../../hooks/form.js';
+// import './styles.scss';
+import List from '../List/List';
 
 import { v4 as uuid } from 'uuid';
 
 const ToDo = () => {
+  const { display } = useContext(SettingsContext);
 
   const [defaultValues] = useState({
     difficulty: 4,
@@ -13,10 +17,13 @@ const ToDo = () => {
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
-    item.id = uuid();
-    item.complete = false;
     console.log(item);
-    setList([...list, item]);
+    setList([...list, {
+      ...item,
+      id: uuid(),
+      complete: false,
+      display: display,
+    }]);
   }
 
   function deleteItem(id) {
@@ -29,6 +36,7 @@ const ToDo = () => {
     const items = list.map( item => {
       if ( item.id === id ) {
         item.complete = ! item.complete;
+        item.display = ! item.display;
       }
       return item;
     });
@@ -41,10 +49,10 @@ const ToDo = () => {
     let incompleteCount = list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
     document.title = `To Do List: ${incomplete}`;
-    // linter will want 'incomplete' added to dependency array unnecessarily. 
-    // disable code used to avoid linter warning 
-    // eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, [list]);  
+    // linter will want 'incomplete' added to dependency array unnecessarily.
+    // disable code used to avoid linter warning
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list]);
 
   return (
     <>
@@ -75,17 +83,7 @@ const ToDo = () => {
           <button type="submit">Add Item</button>
         </label>
       </form>
-
-      {list.map(item => (
-        <div key={item.id}>
-          <p>{item.text}</p>
-          <p><small>Assigned to: {item.assignee}</small></p>
-          <p><small>Difficulty: {item.difficulty}</small></p>
-          <div onClick={() => toggleComplete(item.id)}>Complete: {item.complete.toString()}</div>
-          <hr />
-        </div>
-      ))}
-
+      <List toggleComplete={toggleComplete} list={list}/>
     </>
   );
 };

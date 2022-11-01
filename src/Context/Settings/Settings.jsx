@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 export const SettingsContext = React.createContext();
 
 function SettingsProvider({ children }) {
-  const [settings, setSettings] = useState('Settings')
-  const [display, setDisplay] = useState(true)
-  const [displayNumber, setDisplayNumber] = useState(3)
-  const [sortField, setSortField] = useState('')
+  const [settings] = useState('Settings')
+  const [display] = useState(true)
+  const [displayNumber] = useState(3)
+  const [sortField] = useState('')
 
 
   const values = {

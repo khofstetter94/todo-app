@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+// import React, { useContext } from 'react';
 import Header from './Components/Header/Header';
 import ToDo from './Components/ToDo';
 import Footer from './Components/Footer/Footer';
-import { SettingsContext } from './Context/Settings/Settings';
+// import { SettingsContext } from './Context/Settings/Settings';
 
 
 function App() {
-  const value = useContext(SettingsContext);
+  // const value = useContext(SettingsContext);
   return (
     <>
       <Header />

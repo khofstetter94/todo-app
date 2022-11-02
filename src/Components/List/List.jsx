@@ -1,18 +1,20 @@
 import { useState, useContext } from 'react';
 import { SettingsContext } from '../../Context/Settings/Settings';
-import { Pagination } from '@mantine/core';
+import { Card, Pagination, Button, Badge, Text } from '@mantine/core';
 
 const List = (props) => {
   const {displayNumber } = useContext(SettingsContext);
 
   const listArray = props.list.filter(item => item.display).map(item => (
-    <div key={item.id}>
+    <Card key={item.id} withBorder>
+      <Card.Section withBorder inheritPadding py="xs">
+        <Badge color="green" variant="filled" style={{ marginRight: '20px' }}>Pending</Badge>
+        {item.assignee}
+      </Card.Section>
       <p>{item.text}</p>
-      <p><small>Assigned to: {item.assignee}</small></p>
-      <p><small>Difficulty: {item.difficulty}</small></p>
-      <div onClick={() => props.toggleComplete(item.id)}>Complete: {item.complete.toString()}</div>
-      <hr />
-    </div>
+      <Button onClick={() => props.toggleComplete(item.id)}>Complete: {item.complete.toString()}</Button>
+      <Text align="right"><small>Difficulty: {item.difficulty}</small></Text>
+    </Card>
   ));
 
   // SOURCE for lines 18-23: https://ihsavru.medium.com/react-paginate-implementing-pagination-in-react-f199625a5c8e
@@ -24,8 +26,8 @@ const List = (props) => {
 
   return (
     <>
-      <Pagination page={activePage} pageCount={pageCount} onChange={setPage} total={pageCount} />
       {currentPageData}
+      <Pagination page={activePage} pageCount={pageCount} onChange={setPage} total={pageCount} />
     </>
   );
 };

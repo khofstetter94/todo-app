@@ -24,8 +24,8 @@ The To Do Manager application has the following overall requirements:
 
 ### Links and Resources
 
-- [ci/cd](http://xyz.com) (GitHub Actions)
-- [front-end application](http://xyz.com)
+- [ci/cd](https://github.com/khofstetter94/todo-app/pull/6)
+- [front-end application](https://animated-medovik-9e9e48.netlify.app/)
 
 #### How to initialize/run your application
 

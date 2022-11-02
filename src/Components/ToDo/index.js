@@ -3,19 +3,17 @@ import { SettingsContext } from '../../Context/Settings/Settings.jsx';
 import useForm from '../../hooks/form.js';
 // import './styles.scss';
 import List from '../List/List';
-import Header from '../Header/Header';
 
 import { v4 as uuid } from 'uuid';
 import { Card, Grid, TextInput, Slider, Text, Button } from '@mantine/core';
 
-const ToDo = () => {
+const ToDo = ({ setIncomplete }) => {
   const { display } = useContext(SettingsContext);
 
   const [defaultValues] = useState({
     difficulty: 4,
   });
   const [list, setList] = useState([]);
-  const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
@@ -50,7 +48,6 @@ const ToDo = () => {
   useEffect(() => {
     let incompleteCount = list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
-    document.title = `To Do List: ${incomplete}`;
     // linter will want 'incomplete' added to dependency array unnecessarily.
     // disable code used to avoid linter warning
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +55,6 @@ const ToDo = () => {
 
   return (
     <>
-      <Header incomplete={incomplete} />
       <Grid style={{ width: '80%', margin: 'auto' }}>
         <Grid.Col xs={12} sm={4}>
           <Card withBorder p="xs">

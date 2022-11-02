@@ -1,71 +1,63 @@
-# Getting Started with Create React App
+# LAB - Class 31-32
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project: To Do App
 
-## Available Scripts
+### Author: KC Hofstetter (With help from Ryan Gallaway, I followed along during some lecture time)
 
-In the project directory, you can run:
+### Problem Domain
 
-### `npm start`
+A Web Application for securely managing a To Do List
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The To Do Manager application has the following overall requirements:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Designed to match the mock-up
+  - Header, Main Section Footer
+  - Use Mantine for styling and visual components
+- The header should present the main menu
+  - Home Link, which shows the list of To Do Items
+- In the “Main” section
+  - The list of items in the to do list
+    - Based on user preferences, show listings in groups of (3, 5, etc) and provide the ability to view multiple “pages” of results
+    - Each item in list should show the text of the item as well as the assignee
+      - Based on user preferences, hide or show completed items
+      - If shown, completed items should be styled differently making their status visually obvious
 
-### `npm test`
+### Links and Resources
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [ci/cd](http://xyz.com) (GitHub Actions)
+- [front-end application](http://xyz.com)
 
-### `npm run build`
+#### How to initialize/run your application
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `npm start`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Features / Routes
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- The application will be created with the following overall architecture and methodologies
 
-### `npm run eject`
+  - React
+  - Functional Components
+  - Settings delivered to the application using Context
+  - User Login & Permissions delivered to the application using Context
+  - Local Storage / Cookies for storing login status
+  - Local Storage / Cookies for storing user preferences
+  - Axios for performing API Requests
+  - Mantine Component Library for styling
+  - Test Driven Development, using Jest
+  - Tests will be runnable locally
+  - Deployment to cloud provider
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### Tests
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- How do you run tests?
+- Any tests of note?
+- Describe any tests that you did not complete, skipped, etc
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Documentation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Describe how global state is consumed by the components
+- Describe the operation of the hook: useForm()
 
-## Learn More
+#### UML
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# todo-app
+![UML](./img/Screen%20Shot%202022-11-01%20at%206.57.40%20PM.png)

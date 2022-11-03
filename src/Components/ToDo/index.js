@@ -3,6 +3,7 @@ import { SettingsContext } from '../../Context/Settings/Settings.jsx';
 import useForm from '../../hooks/form.js';
 // import './styles.scss';
 import List from '../List/List';
+import Auth from '../../Components/Auth/Auth';
 
 import { v4 as uuid } from 'uuid';
 import { Card, Grid, TextInput, Slider, Text, Button } from '@mantine/core';
@@ -26,10 +27,10 @@ const ToDo = ({ setIncomplete }) => {
     }]);
   }
 
-  // function deleteItem(id) {
-  //   const items = list.filter(item => item.id !== id);
-  //   setList(items);
-  // }
+  function deleteItem(id) {
+    const items = list.filter(item => item.id !== id);
+    setList(items);
+  }
 
   function toggleComplete(id) {
 
@@ -56,47 +57,50 @@ const ToDo = ({ setIncomplete }) => {
   return (
     <>
       <Grid style={{ width: '80%', margin: 'auto' }}>
-        <Grid.Col xs={12} sm={4}>
-          <Card withBorder p="xs">
+        <Auth capability="create">
+          <Grid.Col xs={12} sm={4}>
+            <Card withBorder p="xs">
 
-            <h2>Add To Do Item</h2>
+              <h2>Add To Do Item</h2>
 
-            <form onSubmit={handleSubmit}>
-              <TextInput
-                placeholder="Item Details"
-                name="text"
-                onChange={handleChange}
-                label="To Do Item"
-              />
+              <form onSubmit={handleSubmit}>
+                <TextInput
+                  placeholder="Item Details"
+                  name="text"
+                  onChange={handleChange}
+                  label="To Do Item"
+                />
 
-              <TextInput
-                placeholder="Assignee Name"
-                name="assignee"
-                onChange={handleChange}
-                label="Assigned To"
-              />
+                <TextInput
+                  placeholder="Assignee Name"
+                  name="assignee"
+                  onChange={handleChange}
+                  label="Assigned To"
+                />
 
-              <Text>Difficulty</Text>
-              <Slider
-                onChange={handleChange}
-                defaultValue={defaultValues.difficulty}
-                min={0}
-                max={5}
-                step={1}
-                name="difficulty"
-                type="range"
-                mb='lg'
-              />
+                <Text>Difficulty</Text>
+                <Slider
+                  onChange={handleChange}
+                  defaultValue={defaultValues.difficulty}
+                  min={0}
+                  max={5}
+                  step={1}
+                  name="difficulty"
+                  type="range"
+                  mb='lg'
+                />
 
-              <Button type="submit">Add Item</Button>
+                <Button type="submit">Add Item</Button>
 
-            </form>
-          </Card>
-        </Grid.Col>
+              </form>
+            </Card>
+          </Grid.Col>
+        </Auth>
         <Grid.Col xs={12} sm={8}>
-          <List toggleComplete={toggleComplete} list={list} />
+          <List toggleComplete={toggleComplete} list={list} deleteItem={deleteItem} />
         </Grid.Col>
       </Grid>
+
     </>
   );
 };

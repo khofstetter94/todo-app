@@ -8,6 +8,9 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+// import Auth from './Components/auth/auth';
+// import Login from './Components/auth/login';
+// import LoginContext from './Components/auth/context';
 
 function App() {
   const [incomplete, setIncomplete] = useState([]);

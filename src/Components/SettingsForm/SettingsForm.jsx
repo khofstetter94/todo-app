@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { SettingsContext } from '../../Context/Settings/Settings.jsx';
 import { Card, Grid, TextInput, Button, Switch, NumberInput, Text } from '@mantine/core';
+import Auth from '../../Components/Auth/Auth';
 
 const Settings = () => {
   const [isShown, setIsShown] = useState(false);
   const { display, setDisplay, displayNumber, setDisplayNumber, sortField, setSortField } = useContext(SettingsContext);
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault()
     setIsShown(true);
   }
@@ -14,31 +15,33 @@ const Settings = () => {
   return (
     <>
       <Grid style={{ width: '80%', margin: 'auto' }}>
-        <Grid.Col xs={12} sm={6}>
-          <Card withBorder p="xs">
+        <Auth capability="create">
+          <Grid.Col xs={12} sm={6}>
+            <Card withBorder p="xs">
 
-            <Text weight={700} size="lg" style={{ marginBottom: '-18px' }}>Update Settings</Text>
+              <Text weight={700} size="lg" style={{ marginBottom: '-18px' }}>Update Settings</Text>
 
-            <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
 
-              {/* Local storage insertion source: https://blog.logrocket.com/using-localstorage-react-hooks/ */}
+                {/* Local storage insertion source: https://blog.logrocket.com/using-localstorage-react-hooks/ */}
 
-              <Switch style={{ marginBottom: '10px' }} label="Show Completed ToDos" checked={display} onChange={(event) => { setDisplay(event.currentTarget.checked); localStorage.setItem("display", display);}}/>
+                <Switch style={{ marginBottom: '10px' }} label="Show Completed ToDos" checked={display} onChange={(event) => { setDisplay(event.currentTarget.checked); localStorage.setItem("display", display); }} />
 
-              <NumberInput defaultValue={3} placeholder="3" label="Items Per page" value={displayNumber} onChange={(val) => { setDisplayNumber(val); localStorage.setItem("displayNumber", val.toString());}} />
+                <NumberInput defaultValue={3} placeholder="3" label="Items Per page" value={displayNumber} onChange={(val) => { setDisplayNumber(val); localStorage.setItem("displayNumber", val.toString()); }} />
 
-              <TextInput
-                placeholder="difficulty"
-                name="sort"
-                onChange={(e) => { setSortField(e.target.value); localStorage.setItem("sort", e.target.value); }}
-                label="Sort Keyword"
-              />
+                <TextInput
+                  placeholder="difficulty"
+                  name="sort"
+                  onChange={(e) => { setSortField(e.target.value); localStorage.setItem("sort", e.target.value); }}
+                  label="Sort Keyword"
+                />
 
-              <Button type="submit" style={{ marginTop: '15px' }}>Show New Settings</Button>
+                <Button type="submit" style={{ marginTop: '15px' }}>Show New Settings</Button>
 
-            </form>
-          </Card>
-        </Grid.Col>
+              </form>
+            </Card>
+          </Grid.Col>
+        </Auth>
         <Grid.Col xs={12} sm={6}>
           {isShown && (
             <Card withBorder>

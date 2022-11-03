@@ -60,4 +60,4 @@ The To Do Manager application has the following overall requirements:
 
 #### UML
 
-![UML](./img/Screen%20Shot%202022-11-01%20at%206.57.40%20PM.png)
+![UML](./img/whiteboard.png)

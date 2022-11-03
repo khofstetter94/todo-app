@@ -40,7 +40,6 @@ const Login = () => {
       </label>
       <button onClick={() => login(username, password)}>{isLoggedIn ? 'Login' : 'Logout'}</button>
 
-      <div>user: {JSON.stringify(user)}</div>
       {/* <When condition={this.context.loggedIn}>
           <button onClick={this.context.logout}>Log Out</button>
         </When>

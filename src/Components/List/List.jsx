@@ -1,18 +1,27 @@
 import { useState, useContext } from 'react';
 import { SettingsContext } from '../../Context/Settings/Settings';
-import { Card, Pagination, Button, Badge, Text, CloseButton, Group } from '@mantine/core';
+import { Card, Pagination, Badge, Text, CloseButton, Group } from '@mantine/core';
 import Auth from '../../Components/Auth/Auth';
+import { LoginContext } from '../../Context/Auth/Auth';
+import { Else, If, Then } from 'react-if';
 
 const List = (props) => {
   const { displayNumber } = useContext(SettingsContext);
-
-  const listArray = props.list.filter(item => item.display).map(item => (
-    <Auth capability="read">
-      <Card key={item.id} withBorder shadow="md" pb="xs" mb="sm">
+  const { can } = useContext(LoginContext);
+  const listArray = props.list.map((item, index) => (
+    <Auth capability="read" key={`list-${index}`}>
+      <Card key={`list-${index}`} withBorder shadow="md" pb="xs" mb="sm">
         <Card.Section withBorder inheritPadding py="xs">
           <Group position="apart">
             <Group position="left">
-              <Badge color={item.complete ? "green" : "red"} variant="filled" style={{ marginRight: '20px' }}>{item.complete ? "Complete" : "Pending"}</Badge>
+              <If condition={can('update')}>
+                <Then>
+                  <Badge color={item.complete ? "green" : "red"} variant="filled" style={{ marginRight: '20px' }} onClick={() => props.toggleComplete(item.id)}>{item.complete ? "Complete" : "Pending"}</Badge>
+                </Then>
+                <Else>
+                <Badge color={item.complete ? "green" : "red"} variant="filled" style={{ marginRight: '20px' }}>{item.complete ? "Complete" : "Pending"}</Badge>
+                </Else>
+              </If>
               {item.assignee}
             </Group>
             <Auth capability="delete">
@@ -21,7 +30,6 @@ const List = (props) => {
           </Group>
         </Card.Section>
         <p>{item.text}</p>
-        <Button onClick={() => props.toggleComplete(item.id)}>Complete: {item.complete.toString()}</Button>
         <Text align="right"><small>Difficulty: {item.difficulty}</small></Text>
       </Card>
     </Auth>

@@ -9,16 +9,16 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.md,
     color: theme.colors.gray[0],
   },
-  h1: {
-    backgroundColor: theme.colors.gray[8],
-    color: theme.colors.gray[2],
-    width: '80%',
-    margin: 'auto',
-    fontSize: theme.fontSizes.md,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.md,
-    marginTop: theme.spacing.md,
-  }
+  // h1: {
+  //   backgroundColor: theme.colors.gray[8],
+  //   color: theme.colors.gray[2],
+  //   width: '80%',
+  //   margin: 'auto',
+  //   fontSize: theme.fontSizes.md,
+  //   padding: theme.spacing.md,
+  //   marginBottom: theme.spacing.md,
+  //   marginTop: theme.spacing.md,
+  // }
 }))
 const AppHeader = ({ incomplete }) => {
 
@@ -29,13 +29,15 @@ const AppHeader = ({ incomplete }) => {
     <>
       <Header data-testid="todo-header">
         <Navbar className={classes.navbar} style={{ display: 'flex' }}>
-          <Group>
-            <Link to="/" style={{ width: '10%' }}>Home</Link>
-            <Link to="/settings" style={{ width: '10%' }}>Settings</Link>
+          <Group position="apart">
+            <Group>
+              <Link to="/">Home</Link>
+              <Link to="/settings">Settings</Link>
+            </Group>
             <Login />
           </Group>
         </Navbar>
-        <h1 className={classes.h1} data-testid="todo-h1">To Do List: {incomplete} items pending</h1>
+        {/* <h1 className={classes.h1} data-testid="todo-h1">To Do List: {incomplete} items pending</h1> */}
       </Header>
     </>
   );

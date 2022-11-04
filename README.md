@@ -62,6 +62,7 @@ The To Do Manager application has the following overall requirements:
 
 #### Tests
 
+- Credit to Ryan Gallway, followed along during class & used his code for reference
 - 'npm test auth.test.js'
 
 #### Documentation

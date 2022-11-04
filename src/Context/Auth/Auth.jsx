@@ -1,31 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import cookie from 'react-cookies';
 import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 export const LoginContext = React.createContext();
-
-const testUsers = {
-  admin: {
-    password: 'ADMIN',
-    name: 'admin',
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInJvbGUiOiJhZG1pbiIsImNhcGFiaWxpdGllcyI6IlsnY3JlYXRlJywncmVhZCcsJ3VwZGF0ZScsJ2RlbGV0ZSddIiwiaWF0IjoxNTE2MjM5MDIyfQ.pAZXAlTmC8fPELk2xHEaP1mUhR8egg9TH5rCyqZhZkQ'
-  },
-  editor: {
-    password: 'EDITOR',
-    name: 'editor',
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRWRpdG9yIiwicm9sZSI6ImVkaXRvciIsImNhcGFiaWxpdGllcyI6IlsncmVhZCcsJ3VwZGF0ZSddIiwiaWF0IjoxNTE2MjM5MDIyfQ.3aDn3e2pf_J_1rZig8wj9RiT47Ae2Lw-AM-Nw4Tmy_s'
-  },
-  writer: {
-    password: 'WRITER',
-    name: 'writer',
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV3JpdGVyIiwicm9sZSI6IndyaXRlciIsImNhcGFiaWxpdGllcyI6IlsnY3JlYXRlJ10iLCJpYXQiOjE1MTYyMzkwMjJ9.dmKh8m18mgQCCJp2xoh73HSOWprdwID32hZsXogLZ68'
-  },
-  user: {
-    password: 'USER',
-    name: 'user',
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVXNlciIsInJvbGUiOiJ1c2VyIiwiY2FwYWJpbGl0aWVzIjoiWydyZWFkJ10iLCJpYXQiOjE1MTYyMzkwMjJ9.WXYvIKLdPz_Mm0XDYSOJo298ftuBqqjTzbRvCpxa9Go'
-  },
-};
 
 const LoginProvider = ({ children }) => {
 
@@ -37,12 +15,24 @@ const LoginProvider = ({ children }) => {
     return user?.capabilities?.includes(capability);
   }
 
-  const login = (username, password) => {
-    let authCredentials = testUsers[username];
+  const login = async (username, password) => {
+    let config = {
+      baseURL: 'https://api-js401.herokuapp.com',
+      url: '/signin',
+      method: 'post',
+      auth: {
+        username,
+        password,
+      }
+    }
 
-    if (authCredentials && authCredentials.password === password) {
+    let response = await axios(config);
+    console.log('login info: ', response.data);
+    let { token } = response.data;
+
+    if (token) {
       try {
-        _validateToken(authCredentials.token);
+        _validateToken(token);
       } catch (e) {
         console.error(e);
       }

@@ -1,6 +1,8 @@
 import { useContext, useState } from 'react';
+import { If, Then, Else } from 'react-if';
 // import { When } from 'react-if';
 
+import { Button, TextInput, Group } from '@mantine/core';
 import { LoginContext } from '../../Context/Auth/Auth';
 
 const Login = () => {
@@ -8,57 +10,39 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const {
     isLoggedIn,
-    user,
+    // user,
     // error,
     // can,
     login,
-    // logout,
+    logout,
   } = useContext(LoginContext);
 
-  // static contextType = LoginContext;
+  const handleLogout = () => {
+    setUsername('');
+    setPassword('');
+    logout();
+  }
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { username: '', password: '' };
-  // }
-
-  // handleChange = e => {
-  //   this.setState({ [e.target.name]: e.target.value });
-  // };
-
-  // handleSubmit = e => {
-  //   e.preventDefault();
-  //   this.context.login(this.state.username, this.state.password);
-  // };
   return (
     <>
-      <label>Username:
-        <input onChange={(e) => setUsername(e.target.value)} />
-      </label>
-      <label>Password:
-        <input onChange={(e) => setPassword(e.target.value)} />
-      </label>
-      <button onClick={() => login(username, password)}>{isLoggedIn ? 'Login' : 'Logout'}</button>
-
-      {/* <When condition={this.context.loggedIn}>
-          <button onClick={this.context.logout}>Log Out</button>
-        </When>
-
-        <When condition={!this.context.loggedIn}>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              placeholder="UserName"
-              name="username"
-              onChange={this.handleChange}
+      <If condition ={isLoggedIn}>
+        <Then>
+          <Button color="red" onClick={handleLogout}>Log Out</Button>
+        </Then>
+        <Else>
+          <Group>
+            <TextInput
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
             />
-            <input
-              placeholder="password"
-              name="password"
-              onChange={this.handleChange}
+            <TextInput
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
             />
-            <button>Login</button>
-          </form>
-        </When> */}
+            <Button color="gray.8" onClick={() => login(username, password)}>Login</Button>
+          </Group>
+        </Else>
+      </If>
     </>
   );
 }

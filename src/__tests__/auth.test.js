@@ -1,91 +1,148 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import LoginProvider, { LoginContext } from '../Context/Auth/Auth';
-import Login from '../Components/Login/Login';
 import Auth from '../Components/Auth/Auth';
+import Login from '../Components/Login/Login';
+import LoginProvider, { LoginContext } from '../Context/Auth/Auth';
 
-test('Should contain user and isloggedIn initial values', () => {
+describe('Auth Integration', () => {
+  it('contains initial user and isLoggedIn values', () => {
+    render(
+      <LoginProvider>
+        <LoginContext.Consumer>
+          {
+            ({isLoggedIn, user}) => (
+              <>
+                <p data-testid="isLoggedIn"> {isLoggedIn.toString()}</p>
+                <p data-testid="user">{typeof(user)}</p>
+              </>
+            )
+          }
+        </LoginContext.Consumer>
+      </LoginProvider>
+    );
 
-  render(
-    <LoginProvider>
-      <LoginContext.Consumer>
-        {auth => (
-          <>
-            <p data-testid="isLoggedIn">{auth.isLoggedIn.toString()}</p>
-            <p data-testid="user">{typeof auth.user}</p>
-          </>
-        )}
-      </LoginContext.Consumer>
-    </LoginProvider>
-  )
+    expect(screen.getByTestId('isLoggedIn')).toHaveTextContent('false');
+    expect(screen.getByTestId('user')).toHaveTextContent('object');
+  });
+  it('allows for login', () => {
+    render(
+      <LoginProvider>
+        <LoginContext.Consumer>
+          {
+            ({isLoggedIn, user}) => (
+              <>
+              <Login />
+                <p data-testid="isLoggedIn"> {isLoggedIn.toString()}</p>
+                <p data-testid="user">{`${user.capabilities}`}</p>
+              </>
+            )
+          }
+        </LoginContext.Consumer>
+      </LoginProvider>
+    );
 
-  expect(screen.getByTestId('isLoggedIn')).toHaveTextContent('false');
-  expect(screen.getByTestId('user')).toHaveTextContent('object');
-});
+    const usernameInput = screen.getByPlaceholderText('Username');
+    const passwordInput = screen.getByPlaceholderText('Password');
+    const button = screen.getByText('Login');
 
-test('Login component should be able to login', () => {
+    fireEvent.change(usernameInput, {target: {value: 'admin'}});
+    fireEvent.change(passwordInput, {target: {value: 'ADMIN'}});
+    fireEvent.click(button);
 
-  render(
-    <LoginProvider>
-      <LoginContext.Consumer>
-        {auth =>
-          <>
-            <Login />
-            <p data-testid="isLoggedIn">{auth.isLoggedIn.toString()}</p>
-            <p data-testid="capabilities">{`${auth.user.capabilities}`}</p>
-          </>
-        }
-      </LoginContext.Consumer>
-    </LoginProvider>
-  )
+    expect(screen.getByTestId('isLoggedIn')).toHaveTextContent('true');
+    expect(screen.getByTestId('user')).toHaveTextContent('create','read','update','delete');
 
-  const usernameInput = screen.getByTestId('username');
-  const passwordInput = screen.getByTestId('password');
-  const button = screen.getByTestId('login');
+    const logoutButton = screen.getByText('Log Out');
+    fireEvent.click(logoutButton);
 
-  // mocking an event:  change of input
-  fireEvent.change(usernameInput, { target: { value: 'admin' } });
-  fireEvent.change(passwordInput, { target: { value: 'ADMIN' } });
-  fireEvent.click(button);
+  });
+  it('renders content with Auth component based on capabilities', () => {
+    render(
+      <LoginProvider>
+        <LoginContext.Consumer>
+          {
+            ({isLoggedIn, user}) => (
+              <>
+              <Login />
+              <Auth capability="read">
+                <p data-testid="test-read">I am authorized to read!</p>
+              </Auth>
+              <Auth capability="delete">
+                <p data-testid="test-delete">I am authorized to delete!</p>
+              </Auth>
+              </>
+            )
+          }
+        </LoginContext.Consumer>
+      </LoginProvider>
+    );
 
-  expect(screen.getByTestId('isLoggedIn')).toHaveTextContent('true');
-  expect(screen.getByTestId('capabilities')).toHaveTextContent('create,update,read,delete');
+    const usernameInput = screen.getByPlaceholderText('Username');
+    const passwordInput = screen.getByPlaceholderText('Password');
+    const button = screen.getByText('Login');
 
-});
+    fireEvent.change(usernameInput, {target: {value: 'user'}});
+    fireEvent.change(passwordInput, {target: {value: 'USER'}});
+    fireEvent.click(button);
 
-test('Auth component should be able to render when logged in', () => {
-  render(
-    <LoginProvider>
-      <LoginContext.Consumer>
-        {auth => (
-          <>
-            <Login />
-            <Auth capability="read">
-              <p data-testid="test-read">I am Authorized!!</p>
-            </Auth>
-            <Auth capability="delete">
-              <p data-testid="test-delete">I am Authorized!!</p>
-            </Auth>
-          </>
-        )}
-      </LoginContext.Consumer>
+    let authorized = screen.getByTestId('test-read');
+    let notAuthorized = screen.queryByTestId('test-delete');
 
-    </LoginProvider>
-  );
+    expect(authorized).toHaveTextContent('I am authorized to read!');
+    expect(notAuthorized).not.toBeInTheDocument();
 
-  let userInput = screen.getByTestId('username');
-  let passInput = screen.getByTestId('password');
+    const logoutButton = screen.getByText('Log Out');
+    fireEvent.click(logoutButton);
 
-  fireEvent.change(userInput, { target: { value: 'user' } });
-  fireEvent.change(passInput, { target: { value: 'USER' } });
-  fireEvent.click(screen.getByTestId('login'));
+  })
+  it('renders content with Auth component based on admin capabilities', () => {
+    render(
+      <LoginProvider>
+        <LoginContext.Consumer>
+          {
+            ({isLoggedIn, user}) => (
+              <>
+              <Login />
+              <Auth capability="read">
+                <p data-testid="test-read">I am authorized to read!</p>
+              </Auth>
+              <Auth capability="delete">
+                <p data-testid="test-delete">I am authorized to delete!</p>
+              </Auth>
+              <Auth capability="update">
+                <p data-testid="test-update">I am authorized to update!</p>
+              </Auth>
+              <Auth capability="create">
+                <p data-testid="test-create">I am authorized to create!</p>
+              </Auth>
+              </>
+            )
+          }
+        </LoginContext.Consumer>
+      </LoginProvider>
+    );
 
-  let authorized =  screen.getByTestId('test-read');
+    const usernameInput = screen.getByPlaceholderText('Username');
+    const passwordInput = screen.getByPlaceholderText('Password');
+    const button = screen.getByText('Login');
 
-  // notice if not expected to exist we use different method.  aka there is nothing to "get"
-  let notAuthorized =  screen.queryByTestId('test-delete');
+    fireEvent.change(usernameInput, {target: {value: 'admin'}});
+    fireEvent.change(passwordInput, {target: {value: 'ADMIN'}});
+    fireEvent.click(button);
 
-  expect(authorized).toHaveTextContent('I am Authorized!!');
-  expect(notAuthorized).not.toBeInTheDocument();
+    let authorizedRead = screen.getByTestId('test-read');
+    let authorizedDelete = screen.getByTestId('test-delete');
+    let authorizedUpdate = screen.getByTestId('test-update');
+    let authorizedCreate = screen.getByTestId('test-create');
+
+    expect(authorizedRead).toHaveTextContent('I am authorized to read!');
+    expect(authorizedDelete).toHaveTextContent('I am authorized to delete!');
+    expect(authorizedUpdate).toHaveTextContent('I am authorized to update!');
+    expect(authorizedCreate).toHaveTextContent('I am authorized to create!');
+
+    const logoutButton = screen.getByText('Log Out');
+    fireEvent.click(logoutButton);
+
+  })
 
 })
